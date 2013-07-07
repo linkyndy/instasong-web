@@ -39,3 +39,7 @@ nosetests.xml
 
 # Mac
 .DS_Store
+
+# Flask-Assets
+static/gen
+static/.webassets-cache
