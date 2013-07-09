@@ -5,7 +5,7 @@ import requests
 import time
 
 app = Flask(__name__)
-app.config.from_object('config.config.DevelopmentConfig')
+app.config.from_object('config.config.ProductionConfig')
 
 assets = Environment(app)
 
