@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, jsonify, session
 from flask.ext.assets import Environment, Bundle
 import facebook
 import requests
+import time
 
 app = Flask(__name__)
 app.config.from_object('config.config.DevelopmentConfig')
@@ -46,12 +47,16 @@ def home():
 @app.route('/suggest')
 def suggest():
 	# Retrieve access_token from session, else try from cookie
-	if 'access_token' in session:
-		access_token = session['access_token']
+	if 'access_token' in session and \
+	   'expires' in session and \
+	   session['expires'] > time.time():
+			access_token = session['access_token']
 	else:
-		cookie = facebook.get_user_from_cookie(request.cookies, app.config['FACEBOOK_APP_ID'], app.config['FACEBOOK_APP_SECRET'])
+		cookie = facebook.get_user_from_cookie(request.cookies, \
+		         app.config['FACEBOOK_APP_ID'], app.config['FACEBOOK_APP_SECRET'])
 		if cookie is not None:
 			access_token = session['access_token'] = cookie['access_token']
+			session['expires'] = time.time() + float(cookie['expires'])
 		else:
 			return jsonify({
 				'type': 'error',
