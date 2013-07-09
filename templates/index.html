@@ -42,11 +42,13 @@
 						// Subscribe to auth changes
 						FB.Event.subscribe('auth.statusChange', function(response) {
 							if (response.status === 'connected') {
-								$("#facebook").html(logoutLink() + suggestionLink("{{ url_for('suggest') }}"))
+								FB.api('/me', function(response) {
+									whenLoggedWithoutSuggestion(response.first_name);
+								});
 					    } else if (response.status === 'not_authorized') {
-					      $("#facebook").html(loginLink())
+					      whenNotLogged();
 					    } else {
-					      $("#facebook").html(loginLink())
+					      whenNotLogged();
 					    }
 						});
 						
@@ -56,7 +58,7 @@
 						 */
 						FB.getLoginStatus(function(response) {
 							if (response.status !== 'connected') {
-					      $("#facebook").html(loginLink())
+					      whenNotLogged();
 					    }
 						});
 					}
@@ -66,7 +68,9 @@
 			function login() {
 				FB.login(function(response) {
 					if (response.authResponse) {
-						$("#facebook").html(logoutLink() + suggestionLink("{{ url_for('suggest') }}"))
+						FB.api('/me', function(response) {
+							whenLoggedWithoutSuggestion(response.first_name);
+						});
 					} else {
 					}
 				}, {scope: 'user_likes'});
@@ -74,41 +78,54 @@
 			
 			function logout() {
 				FB.logout(function(response) {
-					$("#facebook").html(loginLink())
+					whenNotLogged();
 				});
 			}
 			
 			function getSuggestion() {
 				$("#suggestion").html("Getting suggestion...")
 				$.getJSON('{{ url_for("suggest") }}', function(data) {
-						if (data.type === 'success') {
-							$("#suggestion").html(data.data.artist + "<br>" + data.data.song + "<br>" + data.data.url);
-						} else {
-							$("#suggestion").html(data.message);
-						}
+						whenLoggedWithSuggestion(data);
 				});
 			}
 			
 			function loginLink() {
-				return '<a href="#" onclick="login();" class="btn btn-primary btn-large">Connect with Facebook</a>'
+				return '<a href="#" onclick="login();">connecting your Facebook account</a>'
 			}
 			
 			function logoutLink() {
-				return '<a href="#" onclick="logout();" class="btn btn-primary btn-large">Log out</a>'
+				return '<a href="#" onclick="logout();">disconnect your account</a>'
 			}
 			
-			function suggestionLink() {
-				return '<a href="#" onclick="getSuggestion();" class="btn btn-primary btn-large">Get suggestion</a>'
+			function suggestionLink(x) {
+				if (x == 0) {
+					return '<a href="#" onclick="getSuggestion();">this song</a>'
+				} else if (x == 1) {
+					return '<a href="#" onclick="getSuggestion();">try another one</a>'
+				} else if (x == 2) {
+					return '<a href="#" onclick="getSuggestion();">Try again</a>'
+				}
+			}
+			
+			function whenNotLogged() {
+				$("#container").html('<div class="row"><h3>Fancy listening to a great song? Get started by ' + loginLink() + '</h3></div>')
+			}
+			
+			function whenLoggedWithoutSuggestion(username) {
+				$("#container").html('<div class="row"><h3>Hi there, ' + username + '! Brighten your day with ' + suggestionLink(0) + '!</h3><h6>Or maybe ' + logoutLink() + '?</h6></div>')
+			}
+			
+			function whenLoggedWithSuggestion(suggestion) {
+				if (suggestion.type === 'success') {
+					$("#container").html('<div class="row"><h3>Here\'s what we\'ve got for you...</h3><h2>' + suggestion.data.artist + ' - ' + suggestion.data.song + '</h2><h6>Liked it? Here, ' + suggestionLink(1) + '! Or maybe ' + logoutLink() + '?</h6></div>')
+				} else {
+					$("#container").html('<div class="row"><h3>Oh blast! There was an error with your suggestion. ' + suggestionLink(2) + '!</h3><h6>Or maybe ' + logoutLink() + '?</h6></div>')
+				}
 			}
 		</script>
 		
-    <div class="container">
-			<div id="facebook" class="row">
-				<span>Checking user...</span>
-      </div>
-			<div id="suggestion" class="row">
-				
-			</div>
+    <div id="container" class="container">
+			<h3>Loading...</h3>
     </div> <!-- /container -->
 
     <!-- Load JS here for greater good =============================-->
