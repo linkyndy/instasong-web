@@ -5,7 +5,7 @@ import requests
 import time
 
 app = Flask(__name__)
-app.config.from_object('config.config.ProductionConfig')
+app.config.from_object('config.config.Config')
 
 assets = Environment(app)
 
@@ -63,7 +63,7 @@ def suggest():
 				'message': 'Could not retrieve access_token. Please refresh the page.'
 			})
 	
-	return jsonify(requests.get(app.config['URL_SUGGEST'] % access_token).json())
+	return jsonify(requests.get(app.config['URL_SUGGEST'] % (app.config['API_SECRET'], access_token)).json())
 	
 if __name__ == "__main__":
     app.run()

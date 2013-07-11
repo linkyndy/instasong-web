@@ -1,6 +1,9 @@
 # Virtualenv
 venv
 
+# Config
+.env
+
 *.py[cod]
 
 # C extensions
