@@ -5,6 +5,7 @@ Dotenv.load
 
 require_relative "environments"
 require_relative "helpers"
+require_relative "models/user"
 
 get '/' do
   'Hello Instasong!'
