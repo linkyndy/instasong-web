@@ -1,6 +1,8 @@
 require_relative "lib/api_secret_authorization"
 
 configure do
+  enable :sessions
+  
   Her::API.setup url: ENV['API_URL'] do |c|
     c.use ApiSecretAuthorization
     c.use Faraday::Request::UrlEncoded
