@@ -12,6 +12,7 @@ GEM
       tzinfo (~> 1.1)
     addressable (2.3.8)
     builder (3.2.2)
+    dotenv (2.0.1)
     faraday (0.9.1)
       multipart-post (>= 1.2, < 3)
     her (0.7.4)
@@ -44,6 +45,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  dotenv
   her
   koala
   sinatra
