@@ -4,11 +4,12 @@ Bundler.require
 Dotenv.load
 
 require_relative "environments"
+require_relative "helpers"
 
 get '/' do
   'Hello Instasong!'
 
-  if session['access_token']
+  if logged_in?
     "<a href='#{url('logout')}'>Logout</a>"
   else
     "<a href='#{url('login')}'>Login</a>"
