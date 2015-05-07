@@ -12,6 +12,10 @@ App.User = DS.Model.extend({
   accessToken: DS.attr('string')
 });
 
+App.UserSerializer = DS.RESTSerializer.extend({
+  primaryKey: 'facebook_id'
+});
+
 App.Router.map(function() {
   // put your routes here
   this.resource('users');
