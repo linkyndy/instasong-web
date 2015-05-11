@@ -14,6 +14,12 @@
   </script>
 
   <script type="text/x-handlebars" id="index">
+    {{#if session.isAuthenticated}}
+      <a {{ action 'invalidateSession' }} >Logout</a>
+    {{else}}
+      <a {{ action 'authenticateWithFacebook' }} style="cursor: pointer;">Login</a>
+    {{/if}}
+
     <ul>
     {{#each item in model}}
       <li>{{item}}</li>
@@ -44,6 +50,8 @@
   <script src="js/libs/ember-template-compiler-1.11.0.js"></script>
   <script src="js/libs/ember-1.11.0.js"></script>
   <script src="js/libs/ember-data.js"></script>
+  <script src="js/libs/ember-simple-auth-0.8.0-beta.2.js"></script>
+  <script src="http://connect.facebook.net/en_US/all.js"></script>
   <script src="js/app.js"></script>
   <!-- to activate the test runner, add the "?test" query string parameter -->
   <script src="tests/runner.js"></script>
