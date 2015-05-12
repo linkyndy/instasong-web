@@ -13,14 +13,15 @@
     {{outlet}}
   </script>
 
-  <script type="text/x-handlebars" id="index">
+  <script type="text/x-handlebars" data-template-name="index">
     {{#if session.isAuthenticated}}
       <a {{ action 'invalidateSession' }} >Logout</a>
     {{else}}
       <a {{ action 'authenticateWithFacebook' }} style="cursor: pointer;">Login</a>
     {{/if}}
 
-    <a {{ action 'getSuggestion' }} >Get suggestion</a>
+    <button {{action 'getSuggestion'}}>Get suggestion</button>
+
     {{#if suggestion}}
       <p>There is a suggestion</p>
     {{else}}

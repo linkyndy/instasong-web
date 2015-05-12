@@ -1,4 +1,8 @@
-App = Ember.Application.create();
+App = Ember.Application.create({
+  LOG_TRANSITIONS: true,
+  LOG_TRANSITIONS_INTERNAL: true,
+  LOG_VIEW_LOOKUPS: true
+});
 
 FB.init({ appId: '122948994571840' });
 
@@ -50,10 +54,6 @@ App.FacebookAuthenticator = SimpleAuth.Authenticators.Base.extend({
       });
     });
   }
-});
-
-App.ApplicationStore = DS.Store.extend({
-
 });
 
 App.ApplicationAdapter = DS.ActiveModelAdapter.extend({
