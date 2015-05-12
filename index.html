@@ -14,10 +14,11 @@
   </script>
 
   <script type="text/x-handlebars" id="index">
-    {{#if session.isAuthenticated}}
+    {{!-- #if session.isAuthenticated --}}
       <a {{ action 'invalidateSession' }} >Logout</a>
-    {{else}}
+    {{!-- else --}}
       <a {{ action 'authenticateWithFacebook' }} style="cursor: pointer;">Login</a>
+    {{!-- /if --}}
     {{/if}}
 
     <ul>
