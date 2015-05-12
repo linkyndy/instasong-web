@@ -98,12 +98,19 @@ App.IndexRoute = Ember.Route.extend({
   model: function() {
     return ['red', 'yellow', 'blue'];
   },
+  setupController: function(controller, model) {
+    this._super(controller, model);
+    controller.set('suggestion', null);
+  },
   actions: {
     authenticateWithFacebook: function() {
       this.get('session').authenticate('authenticator:facebook', {});
     },
     invalidateSession: function() {
       this.get('session').invalidate();
+    },
+    getSuggestion: function() {
+      this.controller.set('suggestion', this.store.find('suggestion'));
     }
   }
 });

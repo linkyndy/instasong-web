@@ -19,6 +19,12 @@
     {{!-- else --}}
       <a {{ action 'authenticateWithFacebook' }} style="cursor: pointer;">Login</a>
     {{!-- /if --}}
+
+    <a {{ action 'getSuggestion' }} >Get suggestion</a>
+    {{#if suggestion}}
+      <p>There is a suggestion</p>
+    {{else}}
+      <p>NO suggestion</p>
     {{/if}}
 
     <ul>
