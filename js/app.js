@@ -68,6 +68,26 @@ App.UserSerializer = DS.RESTSerializer.extend({
   primaryKey: 'facebook_id'
 });
 
+App.Suggestion = DS.Model.extend({
+  user: DS.belongsTo('user'),
+  artist: DS.belongsTo('artist'),
+  song: DS.belongsTo('song')
+});
+
+App.Artist = DS.Model.extend({
+  facebook_id: DS.attr('string'),
+  echonest_id: DS.attr('string'),
+  spotify_id: DS.attr('string'),
+  name: DS.attr('string')
+});
+
+App.Song = DS.Model.extend({
+  echonest_id: DS.attr('string'),
+  spotify_id: DS.attr('string'),
+  soundcloud_id: DS.attr('string'),
+  name: DS.attr('string')
+});
+
 App.Router.map(function() {
   // put your routes here
   this.resource('users');
