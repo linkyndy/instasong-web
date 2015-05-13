@@ -69,9 +69,9 @@ App.UserSerializer = DS.RESTSerializer.extend({
 });
 
 App.Suggestion = DS.Model.extend({
-  user: DS.belongsTo('user'),
-  artist: DS.belongsTo('artist'),
-  song: DS.belongsTo('song')
+  user: DS.belongsTo('user', {async: true}),
+  artist: DS.belongsTo('artist', {async: true}),
+  song: DS.belongsTo('song', {async: true})
 });
 
 App.Artist = DS.Model.extend({
@@ -110,7 +110,13 @@ App.IndexRoute = Ember.Route.extend({
       this.get('session').invalidate();
     },
     getSuggestion: function() {
-      this.controller.set('suggestion', this.store.find('suggestion'));
+      controller = this.controller;
+      // TODO: Remove the following variables with proper ones
+      facebook_id = '100000521573239';
+      tz = '+06:00';
+      this.store.find('suggestion', {facebook_id: facebook_id, tz: tz}).then(function(suggestions) {
+          controller.set('suggestion', suggestions.get('firstObject'));
+      });
     }
   }
 });
