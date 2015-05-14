@@ -26,6 +26,7 @@
       <p>There is a suggestion</p>
       <p>Artist: {{suggestion.artist.name}}</p>
       <p>Song: {{suggestion.song.name}}</p>
+      <audio {{bind-attr src=suggestion.song.stream_url}} controls/>
     {{else}}
       <p>NO suggestion</p>
     {{/if}}

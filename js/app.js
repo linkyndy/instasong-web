@@ -85,7 +85,8 @@ App.Song = DS.Model.extend({
   echonest_id: DS.attr('string'),
   spotify_id: DS.attr('string'),
   soundcloud_id: DS.attr('string'),
-  name: DS.attr('string')
+  name: DS.attr('string'),
+  stream_url: DS.attr('string')
 });
 
 App.Router.map(function() {
