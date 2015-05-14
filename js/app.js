@@ -114,7 +114,7 @@ App.IndexRoute = Ember.Route.extend({
       controller = this.controller;
       // TODO: Remove the following variables with proper ones
       facebook_id = '100000521573239';
-      tz = '+06:00';
+      tz = new Date().toString().match(/([-\+][0-9]+)\s/)[1];
       this.store.find('suggestion', {facebook_id: facebook_id, tz: tz}).then(function(suggestions) {
           controller.set('suggestion', suggestions.get('firstObject'));
       });
