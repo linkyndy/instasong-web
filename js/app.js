@@ -1,8 +1,4 @@
-App = Ember.Application.create({
-  LOG_TRANSITIONS: true,
-  LOG_TRANSITIONS_INTERNAL: true,
-  LOG_VIEW_LOOKUPS: true
-});
+App = Ember.Application.create();
 
 FB.init({ appId: '122948994571840' });
 
@@ -91,8 +87,6 @@ App.Song = DS.Model.extend({
 
 App.Router.map(function() {
   // put your routes here
-  this.resource('users');
-  this.resource('user', { path: '/users/:user_id' });
 });
 
 App.IndexRoute = Ember.Route.extend({
@@ -119,17 +113,5 @@ App.IndexRoute = Ember.Route.extend({
           controller.set('suggestion', suggestions.get('firstObject'));
       });
     }
-  }
-});
-
-App.UsersRoute = Ember.Route.extend({
-  model: function() {
-    return this.store.find('user');
-  }
-});
-
-App.UserRoute = Ember.Route.extend({
-  model: function(params) {
-    return this.store.find('user', params.user_id);
   }
 });
