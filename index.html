@@ -2,49 +2,42 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Ember Starter Kit</title>
+  <title>Instasong</title>
   <link rel="stylesheet" href="css/normalize.css">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
   <p>Body</p>
   <script type="text/x-handlebars">
-    <h2>Welcome to Ember.js</h2>
+    <h2>Instasong</h2>
 
     {{outlet}}
   </script>
 
-  <script type="text/x-handlebars" id="index">
-    <ul>
-    {{#each item in model}}
-      <li>{{item}}</li>
-    {{/each}}
-    </ul>
-  </script>
+  <script type="text/x-handlebars" data-template-name="index">
+    {{#if session.isAuthenticated}}
+      <button {{ action 'invalidateSession' }} >Logout</button>
+    {{else}}
+      <button {{ action 'authenticateWithFacebook' }} style="cursor: pointer;">Login</button>
+    {{/if}}
 
-  <script type="text/x-handlebars" id="users">
-    <h3>Users</h3>
-    {{#link-to 'users'}}Users{{/link-to}}
-    <ul>
-    {{#each user in model}}
-      <li>
-        {{#link-to 'user' user}}
-          {{user.id}}
-        {{/link-to}}
-      </li>
-    {{/each}}
-    </ul>
-  </script>
+    <button {{action 'getSuggestion'}}>Get suggestion</button>
 
-  <script type="text/x-handlebars" id="user">
-    <h3>User {{facebookId}}</h3>
-    {{#link-to 'users'}}Users{{/link-to}}
+    {{#if suggestion}}
+      <p>Artist: {{suggestion.artist.name}}</p>
+      <p>Song: {{suggestion.song.name}}</p>
+      <audio {{bind-attr src=suggestion.song.stream_url}} controls/>
+    {{else}}
+      <p>No suggestion yet...</p>
+    {{/if}}
   </script>
 
   <script src="js/libs/jquery-1.10.2.js"></script>
-  <script src="js/libs/ember-template-compiler-1.11.0.js"></script>
-  <script src="js/libs/ember-1.11.0.js"></script>
-  <script src="js/libs/ember-data.js"></script>
+  <script src="http://builds.emberjs.com/release/ember-template-compiler.js"></script>
+  <script src="http://builds.emberjs.com/release/ember.debug.js"></script>
+  <script src="http://builds.emberjs.com/beta/ember-data.js"></script>
+  <script src="js/libs/ember-simple-auth-0.8.0-beta.2.js"></script>
+  <script src="http://connect.facebook.net/en_US/all.js"></script>
   <script src="js/app.js"></script>
   <!-- to activate the test runner, add the "?test" query string parameter -->
   <script src="tests/runner.js"></script>
