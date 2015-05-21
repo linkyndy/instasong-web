@@ -53,6 +53,10 @@ App.FacebookAuthenticator = SimpleAuth.Authenticators.Base.extend({
 });
 
 App.ApplicationAdapter = DS.ActiveModelAdapter.extend({
+  host: 'http://104.131.68.183:5000',
+  headers: {
+    'X-API-Secret': 'i9UDy2WpmN90PoW28Eu1a4Rf'
+  }
 });
 
 App.User = DS.Model.extend({
