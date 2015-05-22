@@ -67,11 +67,16 @@ App.User = DS.Model.extend({
 App.UserSerializer = DS.ActiveModelSerializer.extend({
   primaryKey: 'facebook_id',
   serialize: function(snapshot, options) {
+    // Only send these fields
     var json = {
       facebook_id: snapshot.attr('facebookId'),
       access_token: snapshot.attr('accessToken')
     };
     return json;
+  },
+  serializeIntoHash: function(data, type, record, options) {
+    // Get rid of the root when sending data to the API (no "user")
+    data = this.serialize(record, options);
   }
 });
 
