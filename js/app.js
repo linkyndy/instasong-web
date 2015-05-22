@@ -59,6 +59,16 @@ App.ApplicationAdapter = DS.ActiveModelAdapter.extend({
   }
 });
 
+App.UserSerializer = DS.ActiveModelSerializer.extend({
+  serialize: function(snapshot, options) {
+    var json = {
+      facebook_id: snapshot.attr('facebookId'),
+      access_token: snapshot.attr('accessToken')
+    };
+    return json;
+  }
+});
+
 App.User = DS.Model.extend({
   facebookId: DS.attr('string'),
   accessToken: DS.attr('string')
@@ -102,7 +112,7 @@ App.IndexRoute = Ember.Route.extend({
     authenticateWithFacebook: function() {
       this.get('session').authenticate('authenticator:facebook', {});
       this.store.find('user', FB.getUserID()).then(function(user) {
-        user.set('access_token', FB.getAccessToken());
+        user.set('accessToken', FB.getAccessToken());
         user.save();
       });
     },
