@@ -104,6 +104,10 @@ App.IndexRoute = Ember.Route.extend({
   actions: {
     authenticateWithFacebook: function() {
       this.get('session').authenticate('authenticator:facebook', {});
+      this.store.find('user', FB.getUserID()).then(function(user) {
+        user.set('access_token', FB.getAccessToken());
+        user.save();
+      });
     },
     invalidateSession: function() {
       this.get('session').invalidate();
