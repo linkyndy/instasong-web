@@ -94,9 +94,6 @@ App.Router.map(function() {
 });
 
 App.IndexRoute = Ember.Route.extend({
-  model: function() {
-    return ['red', 'yellow', 'blue'];
-  },
   setupController: function(controller, model) {
     this._super(controller, model);
     controller.set('suggestion', null);
