@@ -59,7 +59,13 @@ App.ApplicationAdapter = DS.ActiveModelAdapter.extend({
   }
 });
 
+App.User = DS.Model.extend({
+  facebookId: DS.attr('string'),
+  accessToken: DS.attr('string')
+});
+
 App.UserSerializer = DS.ActiveModelSerializer.extend({
+  primaryKey: 'facebook_id',
   serialize: function(snapshot, options) {
     var json = {
       facebook_id: snapshot.attr('facebookId'),
@@ -67,15 +73,6 @@ App.UserSerializer = DS.ActiveModelSerializer.extend({
     };
     return json;
   }
-});
-
-App.User = DS.Model.extend({
-  facebookId: DS.attr('string'),
-  accessToken: DS.attr('string')
-});
-
-App.UserSerializer = DS.RESTSerializer.extend({
-  primaryKey: 'facebook_id'
 });
 
 App.Suggestion = DS.Model.extend({
