@@ -94,9 +94,6 @@ App.Router.map(function() {
 });
 
 App.IndexRoute = Ember.Route.extend({
-  model: function() {
-    return ['red', 'yellow', 'blue'];
-  },
   setupController: function(controller, model) {
     this._super(controller, model);
     controller.set('suggestion', null);
@@ -104,14 +101,17 @@ App.IndexRoute = Ember.Route.extend({
   actions: {
     authenticateWithFacebook: function() {
       this.get('session').authenticate('authenticator:facebook', {});
+      this.store.find('user', FB.getUserID()).then(function(user) {
+        user.set('access_token', FB.getAccessToken());
+        user.save();
+      });
     },
     invalidateSession: function() {
       this.get('session').invalidate();
     },
     getSuggestion: function() {
       controller = this.controller;
-      // TODO: Remove the following variables with proper ones
-      facebook_id = '100000521573239';
+      facebook_id = FB.getUserID();
       tz = new Date().toString().match(/([-\+][0-9]+)\s/)[1];
       this.store.find('suggestion', {facebook_id: facebook_id, tz: tz}).then(function(suggestions) {
           controller.set('suggestion', suggestions.get('firstObject'));
