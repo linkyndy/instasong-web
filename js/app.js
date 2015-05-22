@@ -107,8 +107,9 @@ App.IndexRoute = Ember.Route.extend({
   },
   actions: {
     authenticateWithFacebook: function() {
+      store = this.store;
       this.get('session').authenticate('authenticator:facebook', {}).then(function() {
-        this.store.find('user', FB.getUserID()).then(function(user) {
+        store.find('user', FB.getUserID()).then(function(user) {
           user.set('accessToken', FB.getAccessToken());
           user.save();
         });
@@ -122,7 +123,7 @@ App.IndexRoute = Ember.Route.extend({
       facebook_id = FB.getUserID();
       tz = new Date().toString().match(/([-\+][0-9]+)\s/)[1];
       this.store.find('suggestion', {facebook_id: facebook_id, tz: tz}).then(function(suggestions) {
-          controller.set('suggestion', suggestions.get('firstObject'));
+        controller.set('suggestion', suggestions.get('firstObject'));
       });
     }
   }
