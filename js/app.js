@@ -64,8 +64,20 @@ App.User = DS.Model.extend({
   accessToken: DS.attr('string')
 });
 
-App.UserSerializer = DS.RESTSerializer.extend({
-  primaryKey: 'facebook_id'
+App.UserSerializer = DS.ActiveModelSerializer.extend({
+  primaryKey: 'facebook_id',
+  serialize: function(snapshot, options) {
+    // Only send these fields
+    var json = {
+      facebook_id: snapshot.attr('facebookId'),
+      access_token: snapshot.attr('accessToken')
+    };
+    return json;
+  },
+  serializeIntoHash: function(hash, type, record, options) {
+    // Get rid of the root when sending data to the API (no "user")
+    Ember.merge(hash, this.serialize(record, options));
+  }
 });
 
 App.Suggestion = DS.Model.extend({
@@ -100,10 +112,12 @@ App.IndexRoute = Ember.Route.extend({
   },
   actions: {
     authenticateWithFacebook: function() {
-      this.get('session').authenticate('authenticator:facebook', {});
-      this.store.find('user', FB.getUserID()).then(function(user) {
-        user.set('access_token', FB.getAccessToken());
-        user.save();
+      store = this.store;
+      this.get('session').authenticate('authenticator:facebook', {}).then(function() {
+        store.find('user', FB.getUserID()).then(function(user) {
+          user.set('accessToken', FB.getAccessToken());
+          user.save();
+        });
       });
     },
     invalidateSession: function() {
@@ -114,7 +128,7 @@ App.IndexRoute = Ember.Route.extend({
       facebook_id = FB.getUserID();
       tz = new Date().toString().match(/([-\+][0-9]+)\s/)[1];
       this.store.find('suggestion', {facebook_id: facebook_id, tz: tz}).then(function(suggestions) {
-          controller.set('suggestion', suggestions.get('firstObject'));
+        controller.set('suggestion', suggestions.get('firstObject'));
       });
     }
   }
