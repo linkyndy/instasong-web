@@ -74,9 +74,9 @@ App.UserSerializer = DS.ActiveModelSerializer.extend({
     };
     return json;
   },
-  serializeIntoHash: function(data, type, record, options) {
+  serializeIntoHash: function(hash, type, record, options) {
     // Get rid of the root when sending data to the API (no "user")
-    data = this.serialize(record, options);
+    Ember.merge(hash, this.serialize(record, options));
   }
 });
 
