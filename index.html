@@ -16,11 +16,11 @@
   <script type="text/x-handlebars" data-template-name="index">
     {{#if session.isAuthenticated}}
       <button {{ action 'invalidateSession' }} >Logout</button>
+
+      <button {{action 'getSuggestion'}}>Get suggestion</button>
     {{else}}
       <button {{ action 'authenticateWithFacebook' }} style="cursor: pointer;">Login</button>
     {{/if}}
-
-    <button {{action 'getSuggestion'}}>Get suggestion</button>
 
     {{#if suggestion}}
       <p>Artist: {{suggestion.artist.name}}</p>
